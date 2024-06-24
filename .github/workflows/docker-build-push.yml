@@ -23,8 +23,8 @@ jobs:
         env:
           IMAGE_NAME: elganchoo/ebookshop
         run: |
-          docker-compose -f web/docker-compose.yml build
-          docker-compose -f web/docker-compose.yml push
+          docker-compose -f web/docker-compose.yml build server
+          docker-compose -f web/docker-compose.yml push server
 
       # Add more steps for testing, linting, etc.
 
