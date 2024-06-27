@@ -1,0 +1,33 @@
+# springboot-app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ebookshop-app
+  namespace: ebookshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ebookshop-app
+  template:
+    metadata:
+      labels:
+        app: ebookshop-app
+    spec:
+      containers:
+        - name: ebookshop-app
+          image: elganchoo/ebookshop-kiii:main_e0a11ba3e37daa105f27c32217d11f24a0739056
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_HOST
+              value: mysqldatabase"
+            - name: MYSQL_PORT
+              value: "3306
+            - name: MYSQL_DATABASE
+              value: kiiiproektdb"
+            - name: MYSQL_USER
+              value: user
+            - name: MYSQL_PASSWORD
+              value: user

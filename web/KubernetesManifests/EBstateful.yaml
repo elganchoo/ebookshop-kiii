@@ -1,0 +1,55 @@
+# mysql-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-database
+  namespace: ebookshop
+spec:
+  serviceName: "mysqldatabase"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_DATABASE
+              value: kiiiproektdb
+            - name: MYSQL_USER
+              value: user
+            - name: MYSQL_PASSWORD
+              value: user
+            - name: MYSQL_ROOT_PASSWORD
+              value: "12345"
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-persistent-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi  # Adjust storage size as needed
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqldatabase
+  namespace: ebookshop
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
